@@ -3,3 +3,6 @@
 
 ## check the emulators
 - emulator -list-avds
+
+## Run the app
+- npx react-native run-android
