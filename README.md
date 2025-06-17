@@ -16,3 +16,6 @@
 - Now I have made the couple of components to program. There is also navigation elements in app.tsx, where user canb navigate between components. Next step is modify the program to use zustand so this how we can share the jsondata and post and get requestes to table project python3 flask server.
 
 - I have to build also logic in the table project pythonserver.py file, how to control the devices but I have a plan about this.
+
+## version 102
+- This version is now working with wlan outlets. I manage to solve pythonserver.py problems and old project is now almoust communicating with this phone app. There is still some errors with wlan bulps but lets figure those in next version.

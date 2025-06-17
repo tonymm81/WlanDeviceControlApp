@@ -43,6 +43,13 @@ const Home = ({ navigation }: HomeScreenProps) => {
         const jsonData = await response.json();
         setData(jsonData);
       } catch (err) {
+        try{
+          const response = await fetch(API_URL);
+          const jsonData = await response.json();
+          setData(jsonData);
+        }catch{
+          setError("Error getting data!");
+        }
         setError("Error getting data!");
         console.error("Fetch error:", err);
       }
@@ -51,7 +58,7 @@ const Home = ({ navigation }: HomeScreenProps) => {
       }
     };
 
-    setTimeout(() => fetchData(), 500);
+    setTimeout(() => fetchData(), 1500);
   }, []);
 
 
@@ -77,6 +84,15 @@ const Home = ({ navigation }: HomeScreenProps) => {
         body: JSON.stringify(updatedData),
       });
     } catch (err) {
+       try {// lets make the POST request to flask server
+        await fetch(POST_URL, {
+          method: 'POST',
+          headers: { 'Content-Type': 'application/json' },
+          body: JSON.stringify(updatedData),
+        });
+       } catch (err){
+
+        }
       console.error('POST error:', err);
     }
   };
@@ -84,7 +100,7 @@ const Home = ({ navigation }: HomeScreenProps) => {
   return (
     <View style={styles.container}>
       <StatusBar barStyle="light-content" />
-      <Text style={styles.title}>Laitteet</Text>
+      <Text style={styles.title}>Wlan devices </Text>
 
       {error && <Text style={styles.error}>{error}</Text>}
 
@@ -95,7 +111,7 @@ const Home = ({ navigation }: HomeScreenProps) => {
           renderItem={({ item }) => {
             const [deviceKey, deviceData] = item;
             const isLamp = deviceData[2] === 24686;
-            const isSocket = deviceData[2] === 30073 || deviceData[2] === 42348;
+            const isSocket = deviceData[2] === 30073 || deviceData[2] === 42348 || deviceData[2] === 32000;
             const isTable = deviceKey === 'distance_from_floor';
             const isOn = isLamp ? deviceData[1].pwr === 1 : deviceData[1];
 
@@ -122,7 +138,7 @@ const Home = ({ navigation }: HomeScreenProps) => {
           }}
         />
       ) : (
-        <Text style={styles.error}>Ladataan dataa...</Text>
+        <Text style={styles.error}>Loading...</Text>
       )}
     </View>
   );

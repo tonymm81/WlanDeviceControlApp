@@ -24,7 +24,7 @@ const PulpView: React.FC<PulpViewProps> = ({ route, navigation }) => {
       <Text>color tempereture: {deviceData[1]?.colortemp}</Text>
 
     
-      <Button title="Takaisin kotiin" onPress={() => navigation.navigate('Home')} />
+      <Button title="Back" onPress={() => navigation.navigate('Home')} />
     </View>
   );
 };

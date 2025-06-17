@@ -22,6 +22,8 @@ const SocketView: React.FC<SocketViewProps> = ({ route, navigation }) => {
       <Text>Socket name: {deviceKey}</Text>
             <Text>brightness: {deviceData[1]?.brightness}</Text>
             <Text>color tempereture: {deviceData[1]?.colortemp}</Text>
+
+        <Button title="Back" onPress={() => navigation.navigate('Home')} />
     </View>
   );
 };

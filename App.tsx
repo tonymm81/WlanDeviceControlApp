@@ -32,9 +32,9 @@ const App = () => {
     <NavigationContainer>
       <Stack.Navigator>
         <Stack.Screen name="Home" component={HomeScreen} />
-        <Stack.Screen name="PulpView" component={PulpView} options={{ title: "Lamppu" }} />
-        <Stack.Screen name="SocketView" component={SocketView} options={{ title: "Pistorasia" }} />
-        <Stack.Screen name="TableAdjustment" component={TableAdjustment} options={{ title: "Pöytä" }} />
+        <Stack.Screen name="PulpView" component={PulpView} options={{ title: "Wlan pulps" }} />
+        <Stack.Screen name="SocketView" component={SocketView} options={{ title: "wlan outlet" }} />
+        <Stack.Screen name="TableAdjustment" component={TableAdjustment} options={{ title: "Adjust desk" }} />
       </Stack.Navigator>
     </NavigationContainer>
   );
