@@ -19,3 +19,21 @@
 
 ## version 102
 - This version is now working with wlan outlets. I manage to solve pythonserver.py problems and old project is now almoust communicating with this phone app. There is still some errors with wlan bulps but lets figure those in next version.
+
+## version 103
+- And then my hard disk went broken.... It was quite hard work to build this project up again but I manage to success with that.
+
+- I add to project the /services/api.ts to hande the pythonserver http requestes.
+- I add also in project types.ts file, where is builded up the interface, what based on raspberry pi restored devices.json object.
+
+### buildings
+- Fix the react native structure, that components are not causing the extra http requestes. Move the home.tsx file http request code to api.ts file and modify the data handling via props and interfaces and build the logic that way that react components rendering is not causing any extra requestes.
+
+- Find out, what is causing problems and errors in pythonserver.py in table project. There is empty value problem, what is causing the api request failing randomly. 
+
+## report
+
+- Added utils folder where we convert json to typescript interface and back to json. There is parseDevices and serializeDevices files.
+- Program is working with new structure but there is some issues related to table project pythonserver.py.
+- I have to figure out the python server issue before continue developing this app.
+. Get requests is working now and post request is causing some errors because python server but it still controlling the wlan deives,
