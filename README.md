@@ -37,3 +37,13 @@
 - Program is working with new structure but there is some issues related to table project pythonserver.py.
 - I have to figure out the python server issue before continue developing this app.
 . Get requests is working now and post request is causing some errors because python server but it still controlling the wlan deives,
+
+## version 104
+
+- I noticed many different problems with react native data. But now this program control the wlan pulps and sockets.
+
+### bug
+- almous every time, when i make POST request, react native keep complaining about post error, but python server still controls the device like wanted. Perhaps some asyck data problem.
+
+### report
+- Next step is to build up more functionalies to react native. Like adjust the lamp brightness and adjust the timers etc. Adjust the work desk level etc. 

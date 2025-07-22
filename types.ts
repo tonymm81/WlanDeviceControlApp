@@ -1,14 +1,16 @@
-export interface Device {// devices json object
+export type RawDeviceMap = Record<string, any[]>;// orginal get request object
+
+export interface Device {
   id: number;
   name: string;
-  type: 'lamp' | 'socket' | 'desk' | 'unknown';
   ip: string;
-  port: number;
+  devType: number;
+  type: 'lamp' | 'socket' | 'desk' | 'unknown';
   red?: number;
   green?: number;
   blue?: number;
   brightness?: number;
   isOn?: boolean;
   height?: number;
-  raw?: any[];
+  raw: any[];
 }

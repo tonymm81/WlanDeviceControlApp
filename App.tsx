@@ -50,34 +50,27 @@ const App = () => {
     }
      
   };
- const toggleDevice = (deviceKey: string) => {
-    // update the device state 
-    setData(prev => {
-      const updated = { ...prev };
-      const dev = { ...updated[deviceKey] };
+ const toggleDevice = async (key: string) => {
+    // Optimistinen update UI:ssä
+    setData(prev => ({
+      ...prev,
+      [key]: { ...prev[key], isOn: !prev[key].isOn }
+    }));
 
-      // Vaihda isOn ja raw-pwr tai bool
-      dev.isOn = !dev.isOn;
-      if (Array.isArray(dev.raw)) {
-        if (typeof dev.raw[1] === 'object') {
-          dev.raw[1].pwr = dev.isOn ? 1 : 0;
-        } else {
-          dev.raw[1] = dev.isOn;
-        }
-      }
+    // Muunnetaan juuri tämä yksi laite array‐muotoon
+    const single: Record<string, any[]> = {
+      [key]: serializeDevices({ [key]: { ...data[key], isOn: !data[key].isOn } })[key]
+    };
 
-      updated[deviceKey] = dev;
-
-      // Lähetä post kutsu
-      postDeviceState(serializeDevices(updated))
-        .catch(err => {
-          console.error('POST failed', err);
-        });
-
-      return updated;
-    });
+    try {
+      await postDeviceState(single);
+    } catch (err) {
+      console.error('POST failed:', err);
+    } finally {
+      // Haetaan aina serverin virallinen data, niin rakenne pysyy tallella
+      await loadData();
+    }
   };
-
   return (
     <NavigationContainer>
       <Stack.Navigator>

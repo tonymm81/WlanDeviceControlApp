@@ -12,6 +12,7 @@ export const fetchDevices = async (): Promise<Record<string, Device>> => {// mak
 };
 
 export const postDeviceState = async (data: Record<string, any>): Promise<void> => {
+  
   try {
     await fetch(POST_URL, {
       method: 'POST',

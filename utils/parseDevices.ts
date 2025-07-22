@@ -1,12 +1,10 @@
 import { Device } from '../types';
 
-export const parseDevices = (
-  rawData: Record<string, any>
-): Record<string, Device> => {
+export const parseDevices = (rawData: Record<string, any>): Record<string, Device> => {
   console.log('[parseDevices] rawData:', rawData);
 
   const parsed: Record<string, Device> = {};
-
+  
   // ─── Erikoiskäsittely: sähkökorkeus ───
   const floorArr = rawData['distance_from_floor'];
   if (Array.isArray(floorArr) && floorArr.length > 0) {
@@ -14,7 +12,7 @@ export const parseDevices = (
       id: 0,
       name: 'Sähköpöydän korkeus',
       ip: '',
-      port: 0,
+      devType : 0,
       type: 'desk',
       isOn: false,
       height: Number(floorArr[0]),
@@ -31,7 +29,8 @@ export const parseDevices = (
       continue;
     }
 
-    const [ip, config, port, ...rest] = value;
+      const [ip, config, devType, ...rest] = value;
+    //const devType = typeof value[5] === 'number' ? value[5] : undefined;
     let type: Device['type'] = 'unknown';
     if (typeof config === 'boolean') {
       type = 'socket';
@@ -47,10 +46,10 @@ export const parseDevices = (
       : config.pwr === 1;
 
     parsed[key] = {
-      id: port,
+      id: devType,
       name: key,
       ip,
-      port,
+      devType,
       type,
       red: typeof config === 'object' ? config.red : undefined,
       green: typeof config === 'object' ? config.green : undefined,
