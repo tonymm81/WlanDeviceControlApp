@@ -46,4 +46,7 @@
 - almous every time, when i make POST request, react native keep complaining about post error, but python server still controls the device like wanted. Perhaps some asyck data problem.
 
 ### report
-- Next step is to build up more functionalies to react native. Like adjust the lamp brightness and adjust the timers etc. Adjust the work desk level etc. 
+- Next step is to build up more functionalies to react native. Like adjust the lamp brightness and adjust the timers etc. Adjust the work desk level etc.
+
+## version 105
+- Still searching the random post and get request error. Everything works fine with functionalies for  example react native changes the wlan devices state, but still coming get and post request errors and I dont know why. I have tested this with postman, cmd and my own phone with termux and flaskserver is responding nice but react native app gives a error. Perhaps next step is build up the application and if it wont give the error, then the problem is in the android emulator, not the program

@@ -1,6 +1,6 @@
 import React, { useEffect, useState } from 'react';
 import type { PropsWithChildren } from 'react';
-import { View, Text, FlatList, TouchableOpacity, StatusBar, StyleSheet,ListRenderItemInfo } from 'react-native';
+import { View, Text, FlatList, TouchableOpacity, StatusBar, StyleSheet,ListRenderItemInfo, Button, ActivityIndicator } from 'react-native';
 import { createStackNavigator } from '@react-navigation/stack';
 import { NavigationContainer } from '@react-navigation/native';
 import { StackNavigationProp } from '@react-navigation/stack';
@@ -13,6 +13,7 @@ import {
   ReloadInstructions,
   
 } from 'react-native/Libraries/NewAppScreen';
+//import { Button } from '@mui/material';
 //import { fetch } from 'react-native-ssl-pinning';
 //import { fetch } from 'react-native';
 type SectionProps = PropsWithChildren<{
@@ -36,6 +37,7 @@ type HomeScreenProps = {
   isLoading: boolean;
   error: string | null;
   toggleDevice: (deviceKey: string) => void;
+  loadData : () => void;
 };
 
 const Home: React.FC<HomeScreenProps> = ({
@@ -44,15 +46,24 @@ const Home: React.FC<HomeScreenProps> = ({
   isLoading,
   error,
   toggleDevice,
+  loadData
 }) => {
  
 
   if (isLoading) {
-    return <Text style={styles.error}>Ladataan dataa...</Text>;
+    return <View style={styles.card}>
+  <ActivityIndicator size="large" color="#007AFF" />
+  <Text style={styles.loading}>Loading data...</Text>
+</View>
+;
   }
   
   if (error) {
-    return <Text style={styles.error}>{error}</Text>;
+    return ( <View style={styles.card}>
+      <Text style={styles.error}>{error}</Text>
+      <Button title="Reload" onPress={() => loadData()} />
+    </View>
+)
   }
 
   

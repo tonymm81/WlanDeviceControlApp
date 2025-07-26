@@ -1,7 +1,7 @@
 import { Device } from '../types';
 
 export const parseDevices = (rawData: Record<string, any>): Record<string, Device> => {
-  console.log('[parseDevices] rawData:', rawData);
+  //console.log('[parseDevices] rawData:', rawData);
 
   const parsed: Record<string, Device> = {};
   
@@ -61,6 +61,6 @@ export const parseDevices = (rawData: Record<string, any>): Record<string, Devic
     };
   }
 
-  console.log('[parseDevices] parsed:', parsed);
+  //console.log('[parseDevices] parsed:', parsed);
   return parsed;
 };

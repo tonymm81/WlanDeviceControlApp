@@ -41,12 +41,14 @@ const App = () => {
   const loadData = async () => {
     try {
       const devices = await fetchDevices();
-      console.log('🕵️‍♂️ RAW GET data:', JSON.stringify(devices, null, 2));
+      //console.log('🕵️‍♂️ RAW GET data:', JSON.stringify(devices, null, 2));
       setData(devices);
     } catch (err) {
       setError('Error loading data');
+      
     } finally {
       setIsLoading(false);
+      setError("")
     }
      
   };
@@ -64,10 +66,12 @@ const App = () => {
 
     try {
       await postDeviceState(single);
+      await new Promise(r => setTimeout(r, 500));
     } catch (err) {
       console.error('POST failed:', err);
     } finally {
       // Haetaan aina serverin virallinen data, niin rakenne pysyy tallella
+      await new Promise(r => setTimeout(r, 500));
       await loadData();
     }
   };
@@ -82,6 +86,7 @@ const App = () => {
                                     isLoading={isLoading}
                                     error={error}
                                     toggleDevice={toggleDevice}
+                                    loadData={loadData}
                                   />
                                 )}
 </Stack.Screen>
