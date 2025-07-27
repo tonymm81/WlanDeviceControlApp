@@ -8,8 +8,9 @@ export interface Device {
   type: 'lamp' | 'socket' | 'desk' | 'unknown';
   red?: number;
   green?: number;
-  blue?: number;
+  bulb_colormode?: number;
   brightness?: number;
+  colortemp?:number;
   isOn?: boolean;
   height?: number;
   raw: any[];

@@ -10,6 +10,7 @@
 ## check problems
 npx react-native doctor
 
-## java libraries adding
+## Projektin rakennusta
+cd android
+./gradlew assembleRelease
 
-set CLASSPATH=F:\androidKamat\Android\JavaLibraries\jaxb-ri\lib\jaxb-api.jar;F:\androidKamat\Android\JavaLibraries\jaxb-ri\lib\jaxb-core.jar;F:\androidKamat\Android\JavaLibraries\jaxb-ri\lib\jaxb-impl.jar;F:\androidKamat\Android\JavaLibraries\jaxb-ri\lib\activation.jar;%CLASSPATH%

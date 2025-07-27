@@ -50,3 +50,9 @@
 
 ## version 105
 - Still searching the random post and get request error. Everything works fine with functionalies for  example react native changes the wlan devices state, but still coming get and post request errors and I dont know why. I have tested this with postman, cmd and my own phone with termux and flaskserver is responding nice but react native app gives a error. Perhaps next step is build up the application and if it wont give the error, then the problem is in the android emulator, not the program
+
+## version 106
+- Lets build again this version and test it with real phone. I make the light adjusment and post error did not appear on builded version. There was some data updating issue in python server but it is fixed now and name duplicates was cauusing the server user rights. Program have to access to wright on the file.
+- I builded the pulpview component and there is now sliders where user can adjust lamp brightness and color temp. There is also button, where user can turn off the device.
+
+- There is still some issues in python server or react. The lamp proterties did not adjusting how it should

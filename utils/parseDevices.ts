@@ -53,7 +53,7 @@ export const parseDevices = (rawData: Record<string, any>): Record<string, Devic
       type,
       red: typeof config === 'object' ? config.red : undefined,
       green: typeof config === 'object' ? config.green : undefined,
-      blue: typeof config === 'object' ? config.blue : undefined,
+      bulb_colormode: typeof config === 'object' ? config.blue : undefined,
       brightness: typeof config === 'object' ? config.brightness : undefined,
       isOn,
       height: typeof config === 'object' ? config.height : undefined,
