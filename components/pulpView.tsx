@@ -35,6 +35,7 @@ const PulpView: React.FC<Props> = ({
   useEffect(() => {
     setBrightness(device.brightness ?? 0);
     setColorMode(device.bulb_colormode ?? 0);
+    setColorTemp(device.colortemp ?? 3500);
     setIsOn(device.isOn ?? false);
   }, [device]);
 

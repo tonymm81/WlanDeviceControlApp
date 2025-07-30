@@ -9,8 +9,8 @@ export interface Device {
   red?: number;
   green?: number;
   bulb_colormode?: number;
-  brightness?: number;
   colortemp?:number;
+  brightness?: number;
   isOn?: boolean;
   height?: number;
   raw: any[];

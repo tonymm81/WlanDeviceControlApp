@@ -56,3 +56,7 @@
 - I builded the pulpview component and there is now sliders where user can adjust lamp brightness and color temp. There is also button, where user can turn off the device.
 
 - There is still some issues in python server or react. The lamp proterties did not adjusting how it should
+
+## version 107
+- Now the app is adjusting the lamp color, color temp and brightness. There is now quite good situation and next step is to add table level adjusment to this app.
+- Next step is build up timer to wlan devices, but this has to plan carefully, because I have to change the table project json structure.

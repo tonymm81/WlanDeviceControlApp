@@ -22,6 +22,10 @@ export const serializeDevices = (
         if (dev.bulb_colormode !== undefined) {
           cfg.bulb_colormode = dev.bulb_colormode;
         }
+        if (dev.colortemp !== undefined) {
+          cfg.colortemp = dev.colortemp;
+        }
+
 
         arr[1] = cfg;
       } else {

@@ -48,6 +48,7 @@ const App = () => {
 
     } finally {
       setIsLoading(false);
+      
       setError("")
     }
 
@@ -75,25 +76,27 @@ const App = () => {
     }
   };
   const updateDevice = async (key: string, partial: Partial<Device>) => {
-  // 1) Muodostetaan uusi dev-olio heti, ei odoteta setData:ta
-  setData(prev => {
-    const updatedDev = { ...prev[key], ...partial };
-    // 2) POST‐payloadin valmistus juuri tästä päivitetyistä tiedoista
-    const single = {
-      [key]: serializeDevices({ [key]: updatedDev })[key]
-    };
+  // Update the dtate
+  const updatedDev = { ...data[key], ...partial };
+  setData(prev => ({
+    ...prev,
+    [key]: updatedDev
+  }));
 
-    // 3) Lähetä samassa lohkossa
-    postDeviceState(single).catch(err => console.error('POST error', err));
+  // wait littlebit
+  await new Promise(r => setTimeout(r, 100)); // viive estää kilpailevan arvon
 
-    // 4) Palauta uusi data react-stateen
-    return { ...prev, [key]: updatedDev };
-  });
+  //Lets serialize the data
+  const single = { [key]: serializeDevices({ [key]: updatedDev })[key] };
 
-  // 5) Lopuksi synkkaa filestoren data
   try {
-    await loadData();
-  } catch {}  
+    await postDeviceState(single);
+    await new Promise(r => setTimeout(r, 500)); // Lets wait for devices reacting
+  } catch (err) {
+    console.error('POST error', err);
+  } finally {
+    await loadData(); // fresh GET 
+  }
 };
 
 
