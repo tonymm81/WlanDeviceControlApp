@@ -60,3 +60,7 @@
 ## version 107
 - Now the app is adjusting the lamp color, color temp and brightness. There is now quite good situation and next step is to add table level adjusment to this app.
 - Next step is build up timer to wlan devices, but this has to plan carefully, because I have to change the table project json structure.
+
+## version 108
+
+- Now this project is adjusting the wlan sockets, wlan lamps and table distance from floor. Next step is build the save or load setup. Python table project have this kind of feature, so I have only to think that how to connect it to this app.

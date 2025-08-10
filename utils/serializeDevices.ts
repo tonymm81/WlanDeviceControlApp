@@ -7,7 +7,11 @@ export const serializeDevices = (
 
   for (const key in devices) {
     const dev = devices[key];
-
+     if (key === 'distance_from_floor') {
+    out[key] = [dev.height ?? 0]; // vain korkeus
+    continue;
+      }
+     console.log("talbe", dev.height)
     if (Array.isArray(dev.raw)) {
       const arr = [...dev.raw];
       // jos arr[1] on objekti, klonataan se ja päivitetään kentät
@@ -25,6 +29,10 @@ export const serializeDevices = (
         if (dev.colortemp !== undefined) {
           cfg.colortemp = dev.colortemp;
         }
+        if (dev.height !== undefined) {
+          cfg.height = dev.height;
+        }
+
 
 
         arr[1] = cfg;

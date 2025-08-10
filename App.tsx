@@ -88,7 +88,7 @@ const App = () => {
 
   //Lets serialize the data
   const single = { [key]: serializeDevices({ [key]: updatedDev })[key] };
-
+ 
   try {
     await postDeviceState(single);
     await new Promise(r => setTimeout(r, 500)); // Lets wait for devices reacting
@@ -134,7 +134,21 @@ const App = () => {
           }}
         </Stack.Screen>
         <Stack.Screen name="SocketView" component={SocketView} options={{ title: "wlan outlet" }} />
-        <Stack.Screen name="TableAdjustment" component={TableAdjustment} options={{ title: "Adjust desk" }} />
+       <Stack.Screen name="TableAdjustment">
+  {props => {
+    const key = props.route.params.deviceKey;
+    return (
+      <TableAdjustment
+        {...props}
+        deviceKey={key}
+        device={data[key]}
+        onUpdate={(partial) => updateDevice(key, partial)}
+      />
+    );
+  }}
+</Stack.Screen>
+
+
       </Stack.Navigator>
     </NavigationContainer>
   );
