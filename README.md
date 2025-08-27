@@ -64,3 +64,7 @@
 ## version 108
 
 - Now this project is adjusting the wlan sockets, wlan lamps and table distance from floor. Next step is build the save or load setup. Python table project have this kind of feature, so I have only to think that how to connect it to this app.
+
+## version 109
+
+- Updated api.ts for new functions, and I have builded to pythonserver.py router ready for this.
