@@ -31,12 +31,20 @@ export const fetchSettings = async (): Promise<SavedSettings> => {//version 109
 };
 
 
-export const saveSettings = async (entry: string, measure: string): Promise<any> => {
+export const saveSettings = async (
+  entry: string,
+  measure: string,
+  slotIndex: number
+): Promise<any> => {
   try {
-    const response = await axios.post(POST_URL_Save, { entry, measure }, {
-      headers: { 'Content-Type': 'application/json' },
-      timeout: 15000
-    });
+    const response = await axios.post(
+      POST_URL_Save,
+      { entry, measure, slotIndex },
+      {
+        headers: { 'Content-Type': 'application/json' },
+        timeout: 15000,
+      }
+    );
     return response.data;
   } catch (Servererror: any) {
     console.error('POST error:', Servererror.toJSON?.() || Servererror);
@@ -44,9 +52,9 @@ export const saveSettings = async (entry: string, measure: string): Promise<any>
   }
 };
 
-export const loadSettings = async (devices: any): Promise<any> => {
+export const loadSettings = async (payload: { name: string; index: number }): Promise<any> => {
   try {
-    const response = await axios.post(POST_URL_Load, { devices }, {
+    const response = await axios.post(POST_URL_Load, payload, {
       headers: { 'Content-Type': 'application/json' },
       timeout: 15000
     });

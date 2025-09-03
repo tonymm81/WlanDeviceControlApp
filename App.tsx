@@ -18,12 +18,14 @@ import {
   ReloadInstructions,
 } from 'react-native/Libraries/NewAppScreen';
 import { serializeDevices } from './utils/serializeDevices';
+import SettingsScreen from './components/SettingsScreen';
 
 type RootStackParamList = {
   Home: undefined;
   PulpView: { deviceKey: string; deviceData: any }; // Navigation props
   SocketView: { deviceKey: string; deviceData: any };
   TableAdjustment: { deviceKey: string; deviceData: any };
+  Settings: undefined;
 };
 
 const Stack = createStackNavigator<RootStackParamList>();
@@ -147,6 +149,9 @@ const App = () => {
     );
   }}
 </Stack.Screen>
+<Stack.Screen name="Settings" component={SettingsScreen} />
+
+
 
 
       </Stack.Navigator>

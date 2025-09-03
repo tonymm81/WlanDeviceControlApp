@@ -14,3 +14,8 @@ npx react-native doctor
 cd android
 ./gradlew assembleRelease
 
+## välimuistin siivous
+cd android
+./gradlew clean
+
+

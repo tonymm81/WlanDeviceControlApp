@@ -68,3 +68,9 @@
 ## version 109
 
 - Updated api.ts for new functions, and I have builded to pythonserver.py router ready for this.
+- Now the save settings are working. User can now save the wanted settings to application and also restore wanted settings. I build new component SettingScreen.tsx and there is this funcionality builded.
+- User can give a name for wanted save slot and also choose a save slot. 
+- I also added the settings button and restart button to home view. Lets build this and test. There is still some features to develope so this is only testing for now.
+
+### bug in version 109
+- When user loads the wanted settings, home tsx is showing the old status of devices so SettingsScreen has to update the home.tsx used devices interface.
