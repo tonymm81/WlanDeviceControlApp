@@ -74,3 +74,7 @@
 
 ### bug in version 109
 - When user loads the wanted settings, home tsx is showing the old status of devices so SettingsScreen has to update the home.tsx used devices interface.
+- When user saves the settings with name, the name is not updating in sdettings view until user navigates to home screen and comes back to settings view.
+
+## version 109.1
+- Made some bugfixes but still the version 109 bugs are valid so need to fix this first. No need to connect this branch to main yet

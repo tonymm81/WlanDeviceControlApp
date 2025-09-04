@@ -149,11 +149,9 @@ const App = () => {
     );
   }}
 </Stack.Screen>
-<Stack.Screen name="Settings" component={SettingsScreen} />
-
-
-
-
+      <Stack.Screen name="Settings">
+        {props => <SettingsScreen {...props} loadData={loadData} />}
+      </Stack.Screen>
       </Stack.Navigator>
     </NavigationContainer>
   );

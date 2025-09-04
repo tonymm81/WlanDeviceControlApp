@@ -1,6 +1,8 @@
-import React, { useEffect, useState } from 'react';
+import React, { useEffect, useState  } from 'react';
 import { View, Text, Button, TextInput, StyleSheet } from 'react-native';
 import { fetchSettings, loadSettings, saveSettings } from '../services/api';
+import { useFocusEffect } from '@react-navigation/native';
+
 
 export const darkTheme = {
   background: '#121212',
@@ -12,14 +14,26 @@ export const darkTheme = {
 };
 
 
-const SettingsScreen = () => {
+type SettingsScreenProps = {
+  loadData: () => void;
+};
+
+const SettingsScreen: React.FC<SettingsScreenProps> = ({ loadData }) => {
+
   const [settings, setSettings] = useState<string[]>([]);
   const [selectedSlot, setSelectedSlot] = useState<number | null>(null);
   const [newName, setNewName] = useState('');
+  const [isLoading, setIsLoading] = useState(true);
 
-  useEffect(() => {
-    fetchSettings().then(res => setSettings(res.saveList));
-  }, []);
+  useFocusEffect(
+  React.useCallback(() => {
+    setIsLoading(true);
+    fetchSettings()
+      .then(res => setSettings(res.saveList))
+      .finally(() => setIsLoading(false));
+  }, [])
+);
+
 
 
   const handleLoad = (name: string, index: number) => {
@@ -40,18 +54,27 @@ const SettingsScreen = () => {
       })
       .then(res => setSettings(res.saveList)) // Päivitetään lista
       .catch(err => console.error('Tallennus epäonnistui:', err));
+      loadData();
   }
 };
 
+
   return (
+   
     <View style={styles.container}>
       <Text style={styles.title}>Save the settings</Text>
       <Text style={styles.buttonText}>Choose the settings, what you like to load</Text>
-      {settings.map((name, index) => (
-  <View key={`slot-${index}`} style={styles.savedButton}>
-    <Button title={name} onPress={() => handleLoad(name, index)} color="#444" />
-  </View>
-))}
+      {isLoading ? (
+  <Text style={styles.buttonText}>Loading the settings...</Text>
+    ) : (
+
+      settings.map((name, index) => (
+    <View key={`slot-${index}`} style={styles.savedButton}>
+      <Button title={name} onPress={() => handleLoad(name, index)} color="#444" />
+    </View>
+  ))
+)}
+
 
       <Text style={styles.buttonText}>Or save current setting</Text>
       <TextInput
