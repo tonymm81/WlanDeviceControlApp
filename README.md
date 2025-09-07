@@ -3,6 +3,8 @@
 ## Description
 - This react native app controls the local network wlan outlet and wlan pulps. You can also control the electrical table level from this app.
 
+# connected with table_project
+
 - The device logic is in Rasbperry pi, what is called in my repo table_project. There is PythonServer.py, what handels the communication, what comes from react native.
 
 ## version 100
@@ -75,6 +77,10 @@
 ### bug in version 109
 - When user loads the wanted settings, home tsx is showing the old status of devices so SettingsScreen has to update the home.tsx used devices interface.
 - When user saves the settings with name, the name is not updating in sdettings view until user navigates to home screen and comes back to settings view.
+- When user load the saved settings, the changes is not activate until user navigates the home page.
 
 ## version 109.1
 - Made some bugfixes but still the version 109 bugs are valid so need to fix this first. No need to connect this branch to main yet
+
+## version 109.2
+- Updating the finded bugs and problems. LEts connect this branch to main and create an issue of that bugs.

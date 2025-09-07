@@ -19,4 +19,7 @@ cd android
 cd android
 ./gradlew clean
 
+##
+pakettien linkitystä HUOM, nää pitää itte konffata filuu react-native.config.js ja sitten vasta loitsu:
+npx react-native link
 
