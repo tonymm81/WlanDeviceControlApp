@@ -15,3 +15,7 @@ export interface Device {
   height?: number;
   raw: any[];
 }
+
+export interface SavedSettings{
+  saveList : string [];
+}

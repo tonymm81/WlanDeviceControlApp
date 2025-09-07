@@ -37,7 +37,7 @@ const TableAdjustment: React.FC<Props> = ({
   return (
     <View style={[styles.container, { backgroundColor: isDark ? '#121212' : '#000000ff' }]}>
       <Text style={[styles.label, { color: isDark ? '#fff' : '#e9e6e6ff' }]}>
-        Nykyinen korkeus: {device.height} cm
+        measurement from floor now: {device.height} cm
       </Text>
 
       <Slider
@@ -53,7 +53,7 @@ const TableAdjustment: React.FC<Props> = ({
       />
 
       <Text style={[styles.label, { color: isDark ? '#fff' : '#fff7f7ff' }]}>
-        Haluttu korkeus: {desiredHeight} cm
+        Wanted level from floor: {desiredHeight} cm
       </Text>
 
       <View style={styles.button}>

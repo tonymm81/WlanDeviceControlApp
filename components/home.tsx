@@ -5,6 +5,8 @@ import { createStackNavigator } from '@react-navigation/stack';
 import { NavigationContainer } from '@react-navigation/native';
 import { StackNavigationProp } from '@react-navigation/stack';
 import { Device } from "../types";
+import MaterialIcons from 'react-native-vector-icons/MaterialIcons'
+import { useNavigation, CommonActions } from '@react-navigation/native';
 import {
   Colors,
   DebugInstructions,
@@ -24,11 +26,13 @@ const API_URL = 'http://192.168.68.201:5000/data'; // Flask-palvelimen URL
 const POST_URL = 'http://192.168.68.201:5000/receive'; // Flask API laitteen tilan muutoksiin
 const Stack = createStackNavigator();
 
+
 type RootStackParamList = {
   Home: undefined; // Etusivu
   PulpView: { deviceKey: string; deviceData: any }; // Lamppu
   SocketView: { deviceKey: string; deviceData: any }; // Pistorasia
   TableAdjustment: { deviceKey: string; deviceData: any }; // Pöydän korkeus
+  Settings: undefined;
 };
 
 type HomeScreenProps = {
@@ -76,11 +80,33 @@ const Home: React.FC<HomeScreenProps> = ({
       default:       return null;
     }
   };
+  const restartApp = () => {// should restart the app
+    navigation.dispatch(
+      CommonActions.reset({
+        index: 0,
+        routes: [{ name: 'Home' }],
+      })
+    );
+  };
+  const getDeviceIcon = (type: string) => {// should get the icon app based on dev type, what comes from python server
+  switch (type) {
+    case 'desk':
+      return <MaterialIcons name="table-bar" size={20} color="#fff" />;
+    case 'lamp':
+      return <MaterialIcons name="lightbulb" size={20} color="#fff" />;
+    case 'socket':
+      return <MaterialIcons name="power" size={20} color="#fff" />;
+    default:
+      return null;
+  }
+};
 
   const renderItem = ({ item }: ListRenderItemInfo<[string, Device]>) => {
     const [key, dev] = item;
     return (
       <View style={styles.card}>
+         
+
         <TouchableOpacity
           style={styles.infoArea}
           onPress={() => navigate(key, dev)}
@@ -91,10 +117,16 @@ const Home: React.FC<HomeScreenProps> = ({
               : dev.name}
           </Text>
           {dev.type === 'desk' ? (
-            <Text style={styles.details}>Korkeus: {dev.height} cm</Text>
+             <View style={styles.detailsRow}>
+                {getDeviceIcon(dev.type)}
+                <Text style={styles.details}>Korkeus: {dev.height} cm</Text>
+            </View>
           ) : (
             <>
-              <Text style={styles.details}>IP: {dev.ip}</Text>
+               <View style={styles.detailsRow}>
+                  {getDeviceIcon(dev.type)}
+                  <Text style={styles.details}>IP: {dev.ip}</Text>
+                </View>
               <Text style={styles.details}>Tyyppi: {dev.type}</Text>
             </>
           )}
@@ -116,11 +148,29 @@ const Home: React.FC<HomeScreenProps> = ({
   };
   return (
     <View style={styles.container}>
+       <View style={styles.topButtons}>
+      <TouchableOpacity
+        style={[styles.topButton, { backgroundColor: '#424242' }]}
+        onPress={() => navigation.navigate('Settings')}
+      >
+        <MaterialIcons name="settings" size={20} color="#fff" />
+        <Text style={styles.topButtonText}>Settings</Text>
+      </TouchableOpacity>
+
+      <TouchableOpacity
+        style={[styles.topButton, { backgroundColor: '#616161' }]}
+        onPress={restartApp}
+      >
+        <MaterialIcons name="restart-alt" size={20} color="#fff" />
+        <Text style={styles.topButtonText}>Restart</Text>
+      </TouchableOpacity>
+    </View>
       <FlatList
         data={Object.entries(data)}
         keyExtractor={([k]) => k}
         renderItem={renderItem}
       />
+     
     </View>
   );
 };
@@ -170,6 +220,31 @@ const styles = StyleSheet.create({
     fontSize: 18,
     color: '#FFFFFF',
   },
+  topButtons: {
+  flexDirection: 'row',
+  justifyContent: 'space-between',
+  marginBottom: 12,
+  paddingTop: 12,
+},
+
+topButton: {
+  flex: 1,
+  marginHorizontal: 6,
+  paddingVertical: 10,
+  borderRadius: 8,
+  alignItems: 'center',
+},
+
+topButtonText: {
+  color: '#FFFFFF',
+  fontSize: 16,
+  fontWeight: '600',
+},
+detailsRow: {
+  flexDirection: 'row',
+  alignItems: 'center',
+  gap: 8, // tai marginRight/iconPadding jos gap ei toimi RN-versiossa
+},
   error: {
     flex: 1,
     textAlign: 'center',
