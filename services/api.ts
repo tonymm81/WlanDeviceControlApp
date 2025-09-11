@@ -8,6 +8,8 @@ const API_URL_setting = 'http://192.168.68.201:5000/SavedSettings';
 const POST_URL = 'http://192.168.68.201:5000/receive';
 const POST_URL_Load = 'http://192.168.68.201:5000/LoadSettingsFromPhone';
 const POST_URL_Save = 'http://192.168.68.201:5000/SaveSettingsFromPhone';
+const API_URL_ShutDown =  'http://192.168.68.201:5000/ShutDownPythonServer';
+const API_URL_UpdateDevices =  'http://192.168.68.201:5000/UpdateTheDevicesJson';
 
 export const fetchDevices = async (): Promise<Record<string, Device>> => {
   try {
@@ -29,6 +31,25 @@ export const fetchSettings = async (): Promise<SavedSettings> => {//version 109
     throw new Error('Error GET device Data');
   }
 };
+
+export const ShutDownPythonServer = async () =>{
+  try{
+      const response = await axios.get(API_URL_ShutDown, { timeout: 15000 });
+      
+  }catch (error : any){
+    throw new Error('Error shutting down');
+  }
+}
+
+export const UpdateTheDevicesListInServer = async () =>{
+  try{
+      const response = await axios.get(API_URL_UpdateDevices, { timeout: 15000 });
+      console.log("get request for updating the devices", response)
+      
+  }catch (error : any){
+    throw new Error('Error updating the devices list');
+  }
+}
 
 
 export const saveSettings = async (

@@ -1,6 +1,6 @@
-import React, { useEffect, useState  } from 'react';
+import React, { useEffect, useState } from 'react';
 import { View, Text, Button, TextInput, StyleSheet } from 'react-native';
-import { fetchSettings, loadSettings, saveSettings } from '../services/api';
+import { fetchSettings, loadSettings, saveSettings, ShutDownPythonServer, UpdateTheDevicesListInServer } from '../services/api';
 import { useFocusEffect } from '@react-navigation/native';
 
 
@@ -25,55 +25,72 @@ const SettingsScreen: React.FC<SettingsScreenProps> = ({ loadData }) => {
   const [newName, setNewName] = useState('');
   const [isLoading, setIsLoading] = useState(true);
 
-  useFocusEffect(
+useFocusEffect(
   React.useCallback(() => {
-    setIsLoading(true);
-    fetchSettings()
-      .then(res => setSettings(res.saveList))
-      .finally(() => setIsLoading(false));
+    const loadSettings = async () => {
+      setIsLoading(true);
+      try {
+        const res = await fetchSettings();
+        setSettings(res.saveList);
+      } catch (error) {
+        console.error('Virhe asetusten latauksessa:', error);
+      } finally {
+        setIsLoading(false);
+      }
+    };
+
+    loadSettings();
   }, [])
 );
 
 
 
-  const handleLoad = (name: string, index: number) => {
-  loadSettings({ name, index }).then(res => {
-    console.log('Ladattu:', res);
-    // Päivitä laitteet tai siirry takaisin
-  });
-};
+  const handleLoad = async (name: string, index: number) => {
+    await loadSettings({ name, index }).then(res => {
+      console.log('Ladattu:', res);
+      // Päivitä laitteet tai siirry takaisin
+    });
+  };
 
-  const handleSave = () => {
-  if (selectedSlot !== null && newName) {
-    saveSettings(newName, 'distance_from_floor', selectedSlot)
-      .then(() => {
-        console.log('Tallennettu!');
-        setSelectedSlot(null);
-        setNewName('');
-        return fetchSettings(); // Haetaan uudet tiedot
-      })
-      .then(res => setSettings(res.saveList)) // Päivitetään lista
-      .catch(err => console.error('Tallennus epäonnistui:', err));
+  const handleSave = async () => {
+    if (selectedSlot !== null && newName) {
+      await saveSettings(newName, 'distance_from_floor', selectedSlot)
+        .then(() => {
+          console.log('Tallennettu!');
+          setSelectedSlot(null);
+          setNewName('');
+          return fetchSettings(); 
+        })
+        .then(res => setSettings(res.saveList)) // Päivitetään lista
+        .catch(err => console.error('Tallennus epäonnistui:', err));
       loadData();
+    }
+  };
+
+  const handleShutdown = () => {
+    ShutDownPythonServer();
   }
-};
+
+  const UpdateDevicesList = async () => {
+    await UpdateTheDevicesListInServer();
+  }
 
 
   return (
-   
+
     <View style={styles.container}>
       <Text style={styles.title}>Save the settings</Text>
       <Text style={styles.buttonText}>Choose the settings, what you like to load</Text>
       {isLoading ? (
-  <Text style={styles.buttonText}>Loading the settings...</Text>
-    ) : (
+        <Text style={styles.buttonText}>Loading the settings...</Text>
+      ) : (
 
-      settings.map((name, index) => (
-    <View key={`slot-${index}`} style={styles.savedButton}>
-      <Button title={name} onPress={() => handleLoad(name, index)} color="#444" />
-    </View>
-  ))
-)}
+        settings.map((name, index) => (
+          <View key={`slot-${index}`} style={styles.savedButton}>
+            <Button title={name} onPress={() => handleLoad(name, index)} color="#444" />
+          </View>
+        ))
+      )}
 
 
       <Text style={styles.buttonText}>Or save current setting</Text>
@@ -85,7 +102,7 @@ const SettingsScreen: React.FC<SettingsScreenProps> = ({ loadData }) => {
       />
       <Text style={styles.buttonText}>First, choose the save slot, where you want to save the settings and then give the slot name and hit the save settings button</Text>
       <View style={styles.slotContainer}>
-        
+
         {[0, 1, 2, 3].map(i => (
           <View key={i} style={styles.slotButton}>
             <Button
@@ -93,10 +110,19 @@ const SettingsScreen: React.FC<SettingsScreenProps> = ({ loadData }) => {
               onPress={() => setSelectedSlot(i)}
               color={selectedSlot === i ? darkTheme.accent : '#999'}
             />
-    </View>
+          </View>
         ))}
-      </View  >
-      <Button title="save settings" onPress={handleSave} />
+      </View >
+      <View style={{ marginVertical: 10 }}>
+        <Button title="save settings" onPress={handleSave} />
+      </View>
+      <View style={{ marginVertical: 10 }}>
+        <Button title="shutdown python server" onPress={handleShutdown} />
+      </View>
+      <View style={{ marginVertical: 10 }}>
+        <Button title="Refresh the device list in python server" onPress={UpdateDevicesList} />
+      </View>
+
     </View>
   );
 };
@@ -131,29 +157,29 @@ const styles = StyleSheet.create({
     fontWeight: 'bold',
   },
   savedButton: {
-  marginVertical: 6,
-  backgroundColor: darkTheme.card,
-  borderRadius: 4,
-  overflow: 'hidden',
-},
+    marginVertical: 6,
+    backgroundColor: darkTheme.card,
+    borderRadius: 4,
+    overflow: 'hidden',
+  },
 
-slotContainer: {
-  flexDirection: 'row',
-  justifyContent: 'space-between',
-  marginVertical: 10,
-},
+  slotContainer: {
+    flexDirection: 'row',
+    justifyContent: 'space-between',
+    marginVertical: 10,
+  },
 
-slotButton: {
-  flex: 1,
-  marginHorizontal: 4,
-},
+  slotButton: {
+    flex: 1,
+    marginHorizontal: 4,
+  },
 
-saveButton: {
-  marginTop: 20,
-  backgroundColor: '#444',
-  borderRadius: 6,
-  overflow: 'hidden',
-}
+  saveButton: {
+    marginTop: 20,
+    backgroundColor: '#444',
+    borderRadius: 6,
+    overflow: 'hidden',
+  }
 });
 
 

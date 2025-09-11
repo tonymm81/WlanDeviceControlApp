@@ -84,3 +84,7 @@
 
 ## version 109.2
 - Updating the finded bugs and problems. LEts connect this branch to main and create an issue of that bugs.
+
+## version 110
+
+- Adding to settings shutdown pythonserver and refresh the devices in python server buttons. I make the api request functions for this and I also update the settings get data functions to asyncronius, so lets test, what this done to empty settings list bug.

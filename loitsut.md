@@ -13,7 +13,7 @@ npx react-native doctor
 ## Projektin rakennusta
 cd android
 ./gradlew assembleRelease
-./gradlew assembleDebug tää ei vaadi salasanaa
+./gradlew assembleDebug tää ei vaadi salasanaa mutta vaatii decv apin luuriin  joten ei
 
 ## välimuistin siivous
 cd android

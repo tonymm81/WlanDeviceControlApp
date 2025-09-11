@@ -1,4 +1,4 @@
-import React, { useEffect, useState } from 'react';
+import React, { useCallback, useEffect, useState } from 'react';
 import type { PropsWithChildren } from 'react';
 import { View, Text, FlatList, TouchableOpacity, StatusBar, StyleSheet,ListRenderItemInfo, Button, ActivityIndicator } from 'react-native';
 import { createStackNavigator } from '@react-navigation/stack';
@@ -6,6 +6,8 @@ import { NavigationContainer } from '@react-navigation/native';
 import { StackNavigationProp } from '@react-navigation/stack';
 import { Device } from "../types";
 import MaterialIcons from 'react-native-vector-icons/MaterialIcons'
+import { useFocusEffect } from '@react-navigation/native';
+
 import { useNavigation, CommonActions } from '@react-navigation/native';
 import {
   Colors,
@@ -22,8 +24,6 @@ type SectionProps = PropsWithChildren<{
   title: string;
 }>;
 
-const API_URL = 'http://192.168.68.201:5000/data'; // Flask-palvelimen URL
-const POST_URL = 'http://192.168.68.201:5000/receive'; // Flask API laitteen tilan muutoksiin
 const Stack = createStackNavigator();
 
 
@@ -100,6 +100,12 @@ const Home: React.FC<HomeScreenProps> = ({
       return null;
   }
 };
+useFocusEffect(
+  useCallback(() => {
+    loadData(); // hae uudet tiedot
+  }, [])
+);
+
 
   const renderItem = ({ item }: ListRenderItemInfo<[string, Device]>) => {
     const [key, dev] = item;
