@@ -2,6 +2,7 @@ import axios from 'axios';
 import { Device } from '../types';
 import { parseDevices } from '../utils/parseDevices';
 import { SavedSettings } from '../types';
+import * as testJson from './devices.json';
 
 const API_URL = 'http://192.168.68.201:5000/data';
 const API_URL_setting = 'http://192.168.68.201:5000/SavedSettings';
@@ -10,11 +11,17 @@ const POST_URL_Load = 'http://192.168.68.201:5000/LoadSettingsFromPhone';
 const POST_URL_Save = 'http://192.168.68.201:5000/SaveSettingsFromPhone';
 const API_URL_ShutDown =  'http://192.168.68.201:5000/ShutDownPythonServer';
 const API_URL_UpdateDevices =  'http://192.168.68.201:5000/UpdateTheDevicesJson';
+const POST_URL_Pair = 'http://192.168.68.201:5000/pair_device'
+const testing = true;
 
 export const fetchDevices = async (): Promise<Record<string, Device>> => {
   try {
-    const response = await axios.get(API_URL, { timeout: 15000 });
-    return parseDevices(response.data);
+    if (!testing){
+      const response = await axios.get(API_URL, { timeout: 15000 });
+      return parseDevices(response.data);
+    }else{
+      return parseDevices(testJson);
+    }
   } catch (Servererror:any) {
     //console.error('[fetchDevices] error:', error);
     console.error('GET error:', Servererror.toJSON?.() || Servererror);
@@ -35,6 +42,7 @@ export const fetchSettings = async (): Promise<SavedSettings> => {//version 109
 export const ShutDownPythonServer = async () =>{
   try{
       const response = await axios.get(API_URL_ShutDown, { timeout: 15000 });
+      console.log(response)
       
   }catch (error : any){
     throw new Error('Error shutting down');
@@ -101,3 +109,14 @@ export const postDeviceState = async (data: Record<string, any>): Promise<void> 
     throw new Error('Error posting device state');
   }
 };
+export const pairNewDevice = async (ssid: string, password: string): Promise<any> => 
+  { 
+    try { const response = await axios.post( POST_URL_Pair, 
+      { ssid, password }, 
+      { headers: { 'Content-Type': 'application/json' }, 
+      timeout: 20000, } ); 
+      return response.data; 
+    } 
+    catch (error: any) 
+    { console.error('Pairing error:', error.toJSON?.() || error); 
+      throw new Error('Error pairing device'); } };

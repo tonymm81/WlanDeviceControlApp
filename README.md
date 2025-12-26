@@ -88,3 +88,22 @@
 ## version 110
 
 - Adding to settings shutdown pythonserver and refresh the devices in python server buttons. I make the api request functions for this and I also update the settings get data functions to asyncronius, so lets test, what this done to empty settings list bug.
+
+## version 111
+
+- Finished the socket view styles.
+- I move the shutdown server button to home view
+- I also fix the app header to dark theme and add icon there.
+- I add the back button to settings screen.
+- Adding the pair device view under settings screen. This route needs to finish in python server.
+
+
+
+### to do in next version.
+- move the shutdonw python server to homa screen. (done in version 111)
+- Test what is the save / load table adjusment issue.
+- Solve the state, when or how program can automaticly scan new devics in wlan.
+- Solve, why update wlandevices did not work.
+- update the libraries
+- finalizing the socket view. It is not complete yet.(done in version 111)
+- should we build the wlandevice pairing part of this program? 

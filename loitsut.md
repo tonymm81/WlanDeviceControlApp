@@ -7,8 +7,10 @@
 ## Run the app
 - npx react-native run-android
 
+## debug the app
+- npx react-native doctor
+
 ## check problems
-npx react-native doctor
 
 ## Projektin rakennusta
 cd android

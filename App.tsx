@@ -2,30 +2,26 @@
 import React, { useEffect, useState } from 'react';
 import { NavigationContainer } from '@react-navigation/native';
 import { createStackNavigator } from '@react-navigation/stack';
-import type { PropsWithChildren } from 'react';
-import { Device } from "./types";
+import { Device } from './types';
+import Icon from 'react-native-vector-icons/MaterialIcons';
 //import the components
 import HomeScreen from './components/home';
 import PulpView from './components/pulpView';
 import SocketView from './components/socketView';
 import TableAdjustment from './components/tableAdjusment';
 import { fetchDevices, postDeviceState } from './services/api';
-import {
-  Colors,
-  DebugInstructions,
-  Header,
-  LearnMoreLinks,
-  ReloadInstructions,
-} from 'react-native/Libraries/NewAppScreen';
+
 import { serializeDevices } from './utils/serializeDevices';
 import SettingsScreen from './components/SettingsScreen';
+import PairDeviceScreen from './components/PairDeviceScreen';
 
-type RootStackParamList = {
+export type RootStackParamList = {
   Home: undefined;
   PulpView: { deviceKey: string; deviceData: any }; // Navigation props
   SocketView: { deviceKey: string; deviceData: any };
   TableAdjustment: { deviceKey: string; deviceData: any };
   Settings: undefined;
+  PairDevice: undefined;
 };
 
 const Stack = createStackNavigator<RootStackParamList>();
@@ -50,7 +46,7 @@ const App = () => {
 
     } finally {
       setIsLoading(false);
-      
+
       setError("")
     }
 
@@ -78,34 +74,44 @@ const App = () => {
     }
   };
   const updateDevice = async (key: string, partial: Partial<Device>) => {
-  // Update the dtate
-  const updatedDev = { ...data[key], ...partial };
-  setData(prev => ({
-    ...prev,
-    [key]: updatedDev
-  }));
+    // Update the dtate
+    const updatedDev = { ...data[key], ...partial };
+    setData(prev => ({
+      ...prev,
+      [key]: updatedDev
+    }));
 
-  // wait littlebit
-  await new Promise(r => setTimeout(r, 100)); // viive estää kilpailevan arvon
+    // wait littlebit
+    await new Promise(r => setTimeout(r, 100)); // viive estää kilpailevan arvon
 
-  //Lets serialize the data
-  const single = { [key]: serializeDevices({ [key]: updatedDev })[key] };
- 
-  try {
-    await postDeviceState(single);
-    await new Promise(r => setTimeout(r, 500)); // Lets wait for devices reacting
-  } catch (err) {
-    console.error('POST error', err);
-  } finally {
-    await loadData(); // fresh GET 
-  }
-};
+    //Lets serialize the data
+    const single = { [key]: serializeDevices({ [key]: updatedDev })[key] };
+
+    try {
+      await postDeviceState(single);
+      await new Promise(r => setTimeout(r, 500)); // Lets wait for devices reacting
+    } catch (err) {
+      console.error('POST error', err);
+    } finally {
+      await loadData(); // fresh GET 
+    }
+  };
 
 
   return (
     <NavigationContainer>
-      <Stack.Navigator>
-        <Stack.Screen name="Home">
+      <Stack.Navigator
+      >
+        <Stack.Screen
+          name="Home" options={{
+            title: 'Home',
+            headerStyle: { backgroundColor: '#111' },
+            headerTintColor: '#fff', headerTitleStyle: { color: '#fff' },
+            headerLeft: () => (
+              <Icon name="home" size={26} color="#fff" style={{ marginLeft: 12 }} />
+            ),
+          }}
+        >
           {props => (
             <HomeScreen
               {...props}
@@ -117,7 +123,17 @@ const App = () => {
             />
           )}
         </Stack.Screen>
-        <Stack.Screen name="PulpView">
+        <Stack.Screen
+          name="PulpView" options={{
+            title: 'Bulb',
+            headerStyle: { backgroundColor: '#111' },
+            headerTintColor: '#fff',
+            headerTitleStyle: { color: '#fff' },
+            headerLeft: () => (
+              <Icon name="lightbulb" size={26} color="#fff" style={{ marginLeft: 12 }} />
+            ),
+          }}
+        >
           {props => {
             const key = props.route.params.deviceKey;
             return (
@@ -135,23 +151,61 @@ const App = () => {
             );
           }}
         </Stack.Screen>
-        <Stack.Screen name="SocketView" component={SocketView} options={{ title: "wlan outlet" }} />
-       <Stack.Screen name="TableAdjustment">
-  {props => {
-    const key = props.route.params.deviceKey;
-    return (
-      <TableAdjustment
-        {...props}
-        deviceKey={key}
-        device={data[key]}
-        onUpdate={(partial) => updateDevice(key, partial)}
-      />
-    );
-  }}
-</Stack.Screen>
-      <Stack.Screen name="Settings">
-        {props => <SettingsScreen {...props} loadData={loadData} />}
-      </Stack.Screen>
+        <Stack.Screen name="SocketView" component={SocketView} 
+        options={{
+          title: 'WLAN Outlet', 
+          headerStyle: { backgroundColor: '#111' }, 
+          headerTintColor: '#fff', 
+          headerTitleStyle: { color: '#fff' }, 
+          headerLeft: () => (
+            <Icon name="power" size={26} color="#fff" style={{ marginLeft: 12 }} />
+          ),
+        }}
+        />
+        <Stack.Screen name="TableAdjustment" 
+        options={{
+          title: 'Table Adjustment', 
+          headerStyle: { backgroundColor: '#111' }, 
+          headerTintColor: '#fff', 
+          headerTitleStyle: { color: '#fff' }, 
+          headerLeft: () => (
+            <Icon name="tune" size={26} color="#fff" style={{ marginLeft: 12 }} />
+          ),
+        }}
+        >
+          {props => {
+            const key = props.route.params.deviceKey;
+            return (
+              <TableAdjustment
+                {...props}
+                deviceKey={key}
+                device={data[key]}
+                onUpdate={(partial) => updateDevice(key, partial)}
+              />
+            );
+          }}
+        </Stack.Screen>
+        <Stack.Screen name="Settings" 
+        options={{
+          title: 'Settings', 
+          headerStyle: { backgroundColor: '#111' }, 
+          headerTintColor: '#fff', 
+          headerTitleStyle: { color: '#fff' }, 
+          headerLeft: () => (
+            <Icon name="settings" size={26} color="#fff" style={{ marginLeft: 12 }} />
+          ),
+        }}
+        >
+         {props => <SettingsScreen {...props} loadData={loadData} />}        
+         </Stack.Screen>
+         <Stack.Screen 
+         name="PairDevice" 
+         component={PairDeviceScreen} 
+         options={{ title: 'Pair Device', 
+         headerStyle: { backgroundColor: '#111' }, 
+         headerTintColor: '#fff', 
+         headerTitleStyle: { color: '#fff' }, 
+         headerLeft: () => ( <Icon name="wifi" size={26} color="#fff" style={{ marginLeft: 12 }} /> ), }} />
       </Stack.Navigator>
     </NavigationContainer>
   );
