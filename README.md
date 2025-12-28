@@ -99,7 +99,7 @@
 
 
 
-### to do in next version.
+### Christmas to do in next version.
 - move the shutdonw python server to homa screen. (done in version 111)
 - Test what is the save / load table adjusment issue.
 - Solve the state, when or how program can automaticly scan new devics in wlan.

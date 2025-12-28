@@ -77,6 +77,7 @@ useFocusEffect(
 
   const UpdateDevicesList = async () => {
     await UpdateTheDevicesListInServer();
+    // tähän ainakin 2 minsan odotus
     await loadData(); // ← tämä päivittää laitelistat App.tsx:ssä 
     navigation.goBack(); // ← valinnainen, jos haluat palata Homeen
   }
