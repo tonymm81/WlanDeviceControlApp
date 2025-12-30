@@ -17,6 +17,8 @@ cd android
 ./gradlew assembleRelease
 ./gradlew assembleDebug tää ei vaadi salasanaa mutta vaatii decv apin luuriin  joten ei
 
+apk: android/app/build/outputs/apk/release/app-release.apk
+
 ## välimuistin siivous
 cd android
 ./gradlew clean

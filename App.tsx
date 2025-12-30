@@ -52,26 +52,20 @@ const App = () => {
 
   };
   const toggleDevice = async (key: string) => {
+    setData(prev => {
+      const updated = { ...prev[key], isOn: !prev[key].isOn };
+      sendToServer(key,updated); // lähetetään heti oikea arvo 
+      return { ...prev, [key]: updated };
+    });
+  };
 
-    setData(prev => ({
-      ...prev,
-      [key]: { ...prev[key], isOn: !prev[key].isOn }
-    }));
-
-    //Lets change the device data to array
-    const single: Record<string, any[]> = {
-      [key]: serializeDevices({ [key]: { ...data[key], isOn: !data[key].isOn } })[key]
-    };
-
-    try {
-      await postDeviceState(single);
-      await new Promise(r => setTimeout(r, 500));
-    } catch (err) {
-      console.error('POST failed:', err);
-    } finally {
-      await new Promise(r => setTimeout(r, 500));
-      await loadData();
-    }
+ const sendToServer = async (key: string, updatedDev: Device) => { 
+  const single = { [key]: serializeDevices({ [key]: updatedDev })[key] }; 
+  try { await postDeviceState(single); 
+    await new Promise(r => setTimeout(r, 500)); } 
+    finally { 
+      await loadData(); 
+    } 
   };
   const updateDevice = async (key: string, partial: Partial<Device>) => {
     // Update the dtate
@@ -151,27 +145,33 @@ const App = () => {
             );
           }}
         </Stack.Screen>
-        <Stack.Screen name="SocketView" component={SocketView} 
-        options={{
-          title: 'WLAN Outlet', 
+        <Stack.Screen name="SocketView" 
+        options={{ title: 'WLAN Outlet', 
           headerStyle: { backgroundColor: '#111' }, 
           headerTintColor: '#fff', 
           headerTitleStyle: { color: '#fff' }, 
-          headerLeft: () => (
-            <Icon name="power" size={26} color="#fff" style={{ marginLeft: 12 }} />
-          ),
-        }}
-        />
-        <Stack.Screen name="TableAdjustment" 
-        options={{
-          title: 'Table Adjustment', 
-          headerStyle: { backgroundColor: '#111' }, 
-          headerTintColor: '#fff', 
-          headerTitleStyle: { color: '#fff' }, 
-          headerLeft: () => (
-            <Icon name="tune" size={26} color="#fff" style={{ marginLeft: 12 }} />
-          ),
-        }}
+          headerLeft: () => ( <Icon name="power" size={26} color="#fff" style={{ marginLeft: 12 }} /> ),
+         }} > 
+         {props => { 
+          const key = props.route.params.deviceKey; 
+          return ( 
+          <SocketView {...props} deviceKey={key} 
+          device={data[key]} onToggle={() => toggleDevice(key)} 
+          /> 
+          );
+           }}
+          </Stack.Screen>
+        
+        <Stack.Screen name="TableAdjustment"
+          options={{
+            title: 'Table Adjustment',
+            headerStyle: { backgroundColor: '#111' },
+            headerTintColor: '#fff',
+            headerTitleStyle: { color: '#fff' },
+            headerLeft: () => (
+              <Icon name="tune" size={26} color="#fff" style={{ marginLeft: 12 }} />
+            ),
+          }}
         >
           {props => {
             const key = props.route.params.deviceKey;
@@ -185,27 +185,29 @@ const App = () => {
             );
           }}
         </Stack.Screen>
-        <Stack.Screen name="Settings" 
-        options={{
-          title: 'Settings', 
-          headerStyle: { backgroundColor: '#111' }, 
-          headerTintColor: '#fff', 
-          headerTitleStyle: { color: '#fff' }, 
-          headerLeft: () => (
-            <Icon name="settings" size={26} color="#fff" style={{ marginLeft: 12 }} />
-          ),
-        }}
+        <Stack.Screen name="Settings"
+          options={{
+            title: 'Settings',
+            headerStyle: { backgroundColor: '#111' },
+            headerTintColor: '#fff',
+            headerTitleStyle: { color: '#fff' },
+            headerLeft: () => (
+              <Icon name="settings" size={26} color="#fff" style={{ marginLeft: 12 }} />
+            ),
+          }}
         >
-         {props => <SettingsScreen {...props} loadData={loadData} />}        
-         </Stack.Screen>
-         <Stack.Screen 
-         name="PairDevice" 
-         component={PairDeviceScreen} 
-         options={{ title: 'Pair Device', 
-         headerStyle: { backgroundColor: '#111' }, 
-         headerTintColor: '#fff', 
-         headerTitleStyle: { color: '#fff' }, 
-         headerLeft: () => ( <Icon name="wifi" size={26} color="#fff" style={{ marginLeft: 12 }} /> ), }} />
+          {props => <SettingsScreen {...props} loadData={loadData} />}
+        </Stack.Screen>
+        <Stack.Screen
+          name="PairDevice"
+          component={PairDeviceScreen}
+          options={{
+            title: 'Pair Device',
+            headerStyle: { backgroundColor: '#111' },
+            headerTintColor: '#fff',
+            headerTitleStyle: { color: '#fff' },
+            headerLeft: () => (<Icon name="wifi" size={26} color="#fff" style={{ marginLeft: 12 }} />),
+          }} />
       </Stack.Navigator>
     </NavigationContainer>
   );

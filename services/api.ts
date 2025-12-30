@@ -12,7 +12,7 @@ const POST_URL_Save = 'http://192.168.68.201:5000/SaveSettingsFromPhone';
 const API_URL_ShutDown =  'http://192.168.68.201:5000/ShutDownPythonServer';
 const API_URL_UpdateDevices =  'http://192.168.68.201:5000/UpdateTheDevicesJson';
 const POST_URL_Pair = 'http://192.168.68.201:5000/pair_device'
-const testing = true;
+const testing = false;
 
 export const fetchDevices = async (): Promise<Record<string, Device>> => {
   try {

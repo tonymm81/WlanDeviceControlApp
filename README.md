@@ -97,6 +97,9 @@
 - I add the back button to settings screen.
 - Adding the pair device view under settings screen. This route needs to finish in python server.
 
+## version 112
+- Modifying app logic. There was some issues related of socket view so I fix it and now we have to build the app and test again. There was also the test boolean true, so the app did not work on prod environment
+
 
 
 ### Christmas to do in next version.

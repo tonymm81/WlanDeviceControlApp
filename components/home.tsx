@@ -15,7 +15,7 @@ import { ShutDownPythonServer } from '../services/api';
 type RootStackParamList = {
   Home: undefined; // Etusivu
   PulpView: { deviceKey: string; deviceData: any }; // Lamppu
-  SocketView: { deviceKey: string; deviceData: any }; // Pistorasia
+  SocketView: { deviceKey: string;  }; // Pistorasia
   TableAdjustment: { deviceKey: string; deviceData: any }; // Pöydän korkeus
   Settings: undefined;
 };
@@ -60,7 +60,7 @@ const Home: React.FC<HomeScreenProps> = ({
   const navigate = (key: string, dev: Device) => {
     switch (dev.type) {
       case 'lamp':   return navigation.navigate('PulpView', { deviceKey: key, deviceData: dev });
-      case 'socket': return navigation.navigate('SocketView', { deviceKey: key, deviceData: dev });
+      case 'socket': return navigation.navigate('SocketView', { deviceKey: key,  });
       case 'desk':   return navigation.navigate('TableAdjustment', { deviceKey: key, deviceData: dev });
       default:       return null;
     }
