@@ -1,7 +1,9 @@
-import React, { useEffect, useState } from 'react';
+import React, {  useState } from 'react';
 import { View, Text, Button, TextInput, StyleSheet } from 'react-native';
 import { fetchSettings, loadSettings, saveSettings, ShutDownPythonServer, UpdateTheDevicesListInServer } from '../services/api';
-import { useFocusEffect } from '@react-navigation/native';
+import { RouteProp, useFocusEffect } from '@react-navigation/native';
+import { StackNavigationProp } from '@react-navigation/stack';
+import { RootStackParamList } from '../App'; 
 
 
 export const darkTheme = {
@@ -14,11 +16,13 @@ export const darkTheme = {
 };
 
 
-type SettingsScreenProps = {
-  loadData: () => void;
+type SettingsScreenProps = { 
+  loadData: () => void; 
+  route: RouteProp<RootStackParamList, 'Settings'>; 
+  navigation: StackNavigationProp<RootStackParamList, 'Settings'>; 
 };
 
-const SettingsScreen: React.FC<SettingsScreenProps> = ({ loadData }) => {
+const SettingsScreen: React.FC<SettingsScreenProps> = ({ loadData, navigation }) => {
 
   const [settings, setSettings] = useState<string[]>([]);
   const [selectedSlot, setSelectedSlot] = useState<number | null>(null);
@@ -73,6 +77,9 @@ useFocusEffect(
 
   const UpdateDevicesList = async () => {
     await UpdateTheDevicesListInServer();
+    // tähän ainakin 2 minsan odotus
+    await loadData(); // ← tämä päivittää laitelistat App.tsx:ssä 
+    navigation.goBack(); // ← valinnainen, jos haluat palata Homeen
   }
 
 
@@ -122,8 +129,16 @@ useFocusEffect(
       <View style={{ marginVertical: 10 }}>
         <Button title="Refresh the device list in python server" onPress={UpdateDevicesList} />
       </View>
+      <View style={styles.buttonWrapper}> 
+        <Button title="Back" onPress={() => navigation.goBack()} color="#4a660aff" /> 
+          </View> 
+          <View style={{ marginVertical: 10 }}> 
+            <Button title="Pair new Broadlink device" onPress={() => navigation.navigate('PairDevice')} color="#4a660aff" /> 
 
-    </View>
+            </View>
+        </View>
+        
+
   );
 };
 
@@ -179,7 +194,9 @@ const styles = StyleSheet.create({
     backgroundColor: '#444',
     borderRadius: 6,
     overflow: 'hidden',
-  }
+  },
+      buttonWrapper: { marginVertical: 12, },
+
 });
 
 

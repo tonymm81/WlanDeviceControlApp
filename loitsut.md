@@ -7,13 +7,17 @@
 ## Run the app
 - npx react-native run-android
 
+## debug the app
+- npx react-native doctor
+
 ## check problems
-npx react-native doctor
 
 ## Projektin rakennusta
 cd android
 ./gradlew assembleRelease
 ./gradlew assembleDebug tää ei vaadi salasanaa mutta vaatii decv apin luuriin  joten ei
+
+apk: android/app/build/outputs/apk/release/app-release.apk
 
 ## välimuistin siivous
 cd android

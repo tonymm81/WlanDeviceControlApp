@@ -1,36 +1,21 @@
-import React, { useCallback, useEffect, useState } from 'react';
-import type { PropsWithChildren } from 'react';
-import { View, Text, FlatList, TouchableOpacity, StatusBar, StyleSheet,ListRenderItemInfo, Button, ActivityIndicator } from 'react-native';
-import { createStackNavigator } from '@react-navigation/stack';
-import { NavigationContainer } from '@react-navigation/native';
+import React, { useCallback,  } from 'react';
+import { View, Text, FlatList, TouchableOpacity, StyleSheet,ListRenderItemInfo, Button, ActivityIndicator } from 'react-native';
 import { StackNavigationProp } from '@react-navigation/stack';
 import { Device } from "../types";
 import MaterialIcons from 'react-native-vector-icons/MaterialIcons'
-import { useFocusEffect } from '@react-navigation/native';
+import { CommonActions, useFocusEffect } from '@react-navigation/native';
+import { ShutDownPythonServer } from '../services/api';
 
-import { useNavigation, CommonActions } from '@react-navigation/native';
-import {
-  Colors,
-  DebugInstructions,
-  Header,
-  LearnMoreLinks,
-  ReloadInstructions,
-  
-} from 'react-native/Libraries/NewAppScreen';
+
 //import { Button } from '@mui/material';
 //import { fetch } from 'react-native-ssl-pinning';
 //import { fetch } from 'react-native';
-type SectionProps = PropsWithChildren<{
-  title: string;
-}>;
-
-const Stack = createStackNavigator();
 
 
 type RootStackParamList = {
   Home: undefined; // Etusivu
   PulpView: { deviceKey: string; deviceData: any }; // Lamppu
-  SocketView: { deviceKey: string; deviceData: any }; // Pistorasia
+  SocketView: { deviceKey: string;  }; // Pistorasia
   TableAdjustment: { deviceKey: string; deviceData: any }; // Pöydän korkeus
   Settings: undefined;
 };
@@ -75,25 +60,20 @@ const Home: React.FC<HomeScreenProps> = ({
   const navigate = (key: string, dev: Device) => {
     switch (dev.type) {
       case 'lamp':   return navigation.navigate('PulpView', { deviceKey: key, deviceData: dev });
-      case 'socket': return navigation.navigate('SocketView', { deviceKey: key, deviceData: dev });
+      case 'socket': return navigation.navigate('SocketView', { deviceKey: key,  });
       case 'desk':   return navigation.navigate('TableAdjustment', { deviceKey: key, deviceData: dev });
       default:       return null;
     }
   };
-  const restartApp = () => {// should restart the app
-    navigation.dispatch(
-      CommonActions.reset({
-        index: 0,
-        routes: [{ name: 'Home' }],
-      })
-    );
-  };
+   const handleShutdown = () => {
+      ShutDownPythonServer();
+    }
   const getDeviceIcon = (type: string) => {// should get the icon app based on dev type, what comes from python server
   switch (type) {
     case 'desk':
       return <MaterialIcons name="table-bar" size={20} color="#fff" />;
     case 'lamp':
-      return <MaterialIcons name="lightbulb" size={20} color="#fff" />;
+      return <MaterialIcons name="light-mode" size={20} color="#fff" />;
     case 'socket':
       return <MaterialIcons name="power" size={20} color="#fff" />;
     default:
@@ -165,10 +145,10 @@ useFocusEffect(
 
       <TouchableOpacity
         style={[styles.topButton, { backgroundColor: '#616161' }]}
-        onPress={restartApp}
+        onPress={handleShutdown}
       >
         <MaterialIcons name="restart-alt" size={20} color="#fff" />
-        <Text style={styles.topButtonText}>Restart</Text>
+        <Text style={styles.topButtonText}>Shutdown the server</Text>
       </TouchableOpacity>
     </View>
       <FlatList
