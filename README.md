@@ -103,10 +103,12 @@
 
 
 ### Christmas to do in next version.
-- move the shutdonw python server to homa screen. (done in version 111)
 - Test what is the save / load table adjusment issue.
 - Solve the state, when or how program can automaticly scan new devics in wlan.
 - Solve, why update wlandevices did not work.
 - update the libraries
 - finalizing the socket view. It is not complete yet.(done in version 111)
 - should we build the wlandevice pairing part of this program? 
+
+## version 113
+- Almoust everything is now fixed and it is time to merge a branch. I have tested this quite good, so I also update one security issue
