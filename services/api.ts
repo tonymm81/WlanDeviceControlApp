@@ -12,6 +12,7 @@ const POST_URL_Save = 'http://192.168.68.201:5000/SaveSettingsFromPhone';
 const API_URL_ShutDown =  'http://192.168.68.201:5000/ShutDownPythonServer';
 const API_URL_UpdateDevices =  'http://192.168.68.201:5000/UpdateTheDevicesJson';
 const POST_URL_Pair = 'http://192.168.68.201:5000/pair_device'
+const API_URL_ShutDown_weatherstation =  'http://192.168.68.200:5000/shutdown';
 const testing = false;
 
 export const fetchDevices = async (): Promise<Record<string, Device>> => {
@@ -48,6 +49,44 @@ export const ShutDownPythonServer = async () =>{
     throw new Error('Error shutting down');
   }
 }
+
+export const ShutDownWeatherstation = async (): Promise<void> => {
+  try {
+    const payload = { cmd: "shutdown" };
+    const config = {
+      headers: { "Content-Type": "application/json" },
+      timeout: 15000,
+    };
+
+    const response = await axios.post(API_URL_ShutDown_weatherstation, payload, config);
+
+    // odotetaan että server vastaa 202 Accepted kun shutdown käynnistetään
+    if (response.status === 202) {
+      console.log("Shutdown request accepted:", response.data);
+      return;
+    }
+
+    // jos server palauttaa jotain muuta, logataan ja heitetään virhe
+    console.warn("Unexpected shutdown response:", response.status, response.data);
+    throw new Error("Unexpected response from shutdown endpoint");
+  } catch (error: any) {
+    // parempi virheloki ja käyttäjäystävällinen virheilmoitus
+    console.error("ShutDownWeatherstation error:", error.toJSON?.() || error);
+    throw new Error("Error shutting down weatherstation");
+  }
+};
+// debug‑funktio, kutsu dev‑consolesta
+export const testReachability = async (url = 'http://192.168.68.200:5000') => {
+  try {
+    const r = await axios.get(url + '/', { timeout: 5000 });
+    console.log('Reachable:', r.status, r.data);
+  } catch (e:any) {
+    console.error('Reachability failed:', { message: e.message, code: e.code, response: e.response?.status });
+    if (e.request) console.error('Request object present (sent, no response):', e.request);
+    if (e.response) console.error('Response data:', e.response.data);
+  }
+};
+
 
 export const UpdateTheDevicesListInServer = async () =>{
   try{
