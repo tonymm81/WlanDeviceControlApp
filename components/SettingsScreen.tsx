@@ -1,6 +1,6 @@
 import React, {  useState } from 'react';
 import { View, Text, Button, TextInput, StyleSheet } from 'react-native';
-import { fetchSettings, loadSettings, saveSettings, ShutDownPythonServer, UpdateTheDevicesListInServer } from '../services/api';
+import { fetchSettings, loadSettings, saveSettings, ShutDownPythonServer, UpdateTheDevicesListInServer, ShutDownWeatherstation, testReachability } from '../services/api';
 import { RouteProp, useFocusEffect } from '@react-navigation/native';
 import { StackNavigationProp } from '@react-navigation/stack';
 import { RootStackParamList } from '../App'; 
@@ -75,6 +75,11 @@ useFocusEffect(
     ShutDownPythonServer();
   }
 
+  const HandeShutdownWeatherstation = () => {
+    ShutDownWeatherstation();
+  }
+
+
   const UpdateDevicesList = async () => {
     await UpdateTheDevicesListInServer();
     // tähän ainakin 2 minsan odotus
@@ -125,6 +130,9 @@ useFocusEffect(
       </View>
       <View style={{ marginVertical: 10 }}>
         <Button title="shutdown python server" onPress={handleShutdown} />
+      </View>
+      <View style={{ marginVertical: 10 }}>
+        <Button title="shutdown weatherstation" onPress={HandeShutdownWeatherstation} />
       </View>
       <View style={{ marginVertical: 10 }}>
         <Button title="Refresh the device list in python server" onPress={UpdateDevicesList} />

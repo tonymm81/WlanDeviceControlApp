@@ -112,3 +112,8 @@
 
 ## version 113
 - Almoust everything is now fixed and it is time to merge a branch. I have tested this quite good, so I also update one security issue
+
+## version 114
+
+- Adding the feature shutdown weatherstation from this app via http post. Feature tested in DEV and it seems to work. Lets test and build up the project. 
+- Updating the node packages security issues
